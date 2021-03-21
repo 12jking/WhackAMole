@@ -30,17 +30,11 @@ public class HitListener implements Listener {
 
     private int getPoints(Entity entity) {
         int ticksLive = entity.getTicksLived();
-        if (ticksLive < 10) {
-            return 5;
-        } else if (ticksLive < 15) {
-            return 4;
-        } else if (ticksLive < 20) {
-            return 3;
-        } else if (ticksLive < 25) {
-            return 2;
-        } else if (ticksLive < 30) {
-            return 1;
-        }
+        if (ticksLive < 10) return 5;
+        else if (ticksLive < 15) return 4;
+        else if (ticksLive < 20) return 3;
+        else if (ticksLive < 25) return 2;
+        else if (ticksLive < 30) return 1;
         return 0;
     }
 }
