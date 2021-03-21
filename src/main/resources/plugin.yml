@@ -1,0 +1,11 @@
+name: WhackAMole
+version: @version@
+main: de.j.whackamole.main.Main
+api-version: 1.16
+authors: [ LuckyProgrammer ]
+
+commands:
+  spawn:
+    description:
+  start:
+    description:
