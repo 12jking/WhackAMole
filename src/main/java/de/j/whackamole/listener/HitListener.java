@@ -26,6 +26,16 @@ public class HitListener implements Listener {
     }
 
     private int getPoints(Entity entity) {
-        return (entity.getTicksLived() + 60) / 20;
+        int ticksLive = entity.getTicksLived();
+        if (ticksLive < 10) {
+            return 4;
+        } else if (ticksLive < 15) {
+            return 3;
+        } else if (ticksLive < 20) {
+            return 2;
+        } else if (ticksLive < 25) {
+            return 1;
+        }
+        return 0;
     }
 }
