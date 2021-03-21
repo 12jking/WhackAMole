@@ -3,7 +3,6 @@ package de.j.whackamole.listener;
 import de.j.whackamole.commands.StartCommand;
 import de.j.whackamole.main.Main;
 import de.j.whackamole.util.Game;
-import jdk.javadoc.internal.tool.Start;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -32,12 +31,14 @@ public class HitListener implements Listener {
     private int getPoints(Entity entity) {
         int ticksLive = entity.getTicksLived();
         if (ticksLive < 10) {
-            return 4;
+            return 5;
         } else if (ticksLive < 15) {
-            return 3;
+            return 4;
         } else if (ticksLive < 20) {
-            return 2;
+            return 3;
         } else if (ticksLive < 25) {
+            return 2;
+        } else if (ticksLive < 30) {
             return 1;
         }
         return 0;
