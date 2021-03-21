@@ -1,7 +1,9 @@
 package de.j.whackamole.listener;
 
+import de.j.whackamole.commands.StartCommand;
 import de.j.whackamole.main.Main;
 import de.j.whackamole.util.Game;
+import jdk.javadoc.internal.tool.Start;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,7 +19,9 @@ public class HitListener implements Listener {
         Player player = (Player) event.getDamager();
         if (!(event.getEntity() instanceof ArmorStand)) return;
 
-        Game.addScore(player, getPoints(event.getEntity()));
+        if (StartCommand.running) {
+            Game.addScore(player, getPoints(event.getEntity()));
+        }
 
         event.setCancelled(true);
         event.getEntity().remove();
