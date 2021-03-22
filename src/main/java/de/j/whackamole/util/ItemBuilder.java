@@ -2,8 +2,10 @@ package de.j.whackamole.util;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import de.j.whackamole.main.Main;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -47,6 +49,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder addFlags(ItemFlag ... itemFlags) {
+        meta.addItemFlags(itemFlags);
+        return this;
+    }
+
     public static ItemStack createHead(String url, String name) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD, (short) 3);
         if (url.isEmpty())
@@ -62,7 +69,7 @@ public class ItemBuilder {
             profileField.setAccessible(true);
             profileField.set(headMeta, profile);
         } catch (IllegalArgumentException | NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            Main.getPlugin().getLogger().severe("An error approached while create Mole head!");
         }
         head.setItemMeta(headMeta);
         return head;
