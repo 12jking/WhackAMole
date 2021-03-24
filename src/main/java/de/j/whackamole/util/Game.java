@@ -32,91 +32,58 @@ public class Game implements Listener {
     }
 
     public static void spawnEntity() {
-        if (!SpawnPlatformCommand.locations.isEmpty()) {
-            /*new BukkitRunnable() {
-                int y = 500;
-                @Override
-                public void run() {
-                    Location location = SpawnPlatformCommand.locations.get(new Random().nextInt(SpawnPlatformCommand.locations.size()));
-                    if (y == 500) {
-                        y = (int) location.getY() - 1;
-                    }
-                    location.setY(y);
+        if (SpawnPlatformCommand.locations.isEmpty())
+            SpawnPlatformCommand.init();
 
-                    ArmorStand entity = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+            int y = 500;
 
-                    entity.setGravity(false);
-
-                    entity.setInvisible(true);
-                    entity.getEquipment().setHelmet(ItemBuilder.getHead("mole"));
-
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            entity.setVelocity(new Vector(0, 0.389, 0));
-                            entity.setGravity(true);
-                        }
-                    }.runTaskLater(Main.getPlugin(), 5);
-
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            entity.remove();
-                            if (!StartCommand.start) {
-                                cancel();
-                            }
-                        }
-                    }.runTaskLaterAsynchronously(Main.getPlugin(), 30);
-                    if (!StartCommand.start) {
-                        cancel();
-                    }
+            @Override
+            public void run() {
+                Location location = SpawnPlatformCommand.locations.get(new Random().nextInt(SpawnPlatformCommand.locations.size()));
+                if (y == 500) {
+                    y = (int) location.getY() - 1;
                 }
-            }.runTaskTimer(Main.getPlugin(), 0, 5);*/
+                location.setY(y);
 
-            taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
-                int y = 500;
-                @Override
-                public void run() {
-                    Location location = SpawnPlatformCommand.locations.get(new Random().nextInt(SpawnPlatformCommand.locations.size()));
-                    if (y == 500) {
-                        y = (int) location.getY() - 1;
+                ArmorStand entity = (ArmorStand) Objects.requireNonNull(location.getWorld()).spawnEntity(location, EntityType.ARMOR_STAND);
+
+                entity.setGravity(false);
+
+                entity.setInvisible(true);
+                Objects.requireNonNull(entity.getEquipment()).setHelmet(ItemBuilder.getHead("mole"));
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        entity.setVelocity(new Vector(0, 0.389, 0));
+                        entity.setGravity(true);
                     }
-                    location.setY(y);
+                }.runTaskLater(Main.getPlugin(), 5);
 
-                    ArmorStand entity = (ArmorStand) Objects.requireNonNull(location.getWorld()).spawnEntity(location, EntityType.ARMOR_STAND);
-
-                    entity.setGravity(false);
-
-                    entity.setInvisible(true);
-                    Objects.requireNonNull(entity.getEquipment()).setHelmet(ItemBuilder.getHead("mole"));
-
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            entity.setVelocity(new Vector(0, 0.389, 0));
-                            entity.setGravity(true);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        entity.remove();
+                        if (!StartCommand.start) {
+                            cancel();
                         }
-                    }.runTaskLater(Main.getPlugin(), 5);
-
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            entity.remove();
-                            if (!StartCommand.start) {
-                                cancel();
-                            }
-                        }
-                    }.runTaskLaterAsynchronously(Main.getPlugin(), 30);
-                    if (!StartCommand.start) {
-                        Bukkit.getScheduler().cancelTask(taskID);
                     }
+                }.runTaskLaterAsynchronously(Main.getPlugin(), 30);
+                if (!StartCommand.start) {
+                    Bukkit.getScheduler().cancelTask(taskID);
                 }
-            },0, 5);
-        }
+            }
+        },0, 5);
+
     }
 
     public static int getScore(Player player) {
-        return score.get(player);
+        try {
+            return score.get(player);
+        } catch (NullPointerException e) {
+            return -1;
+        }
     }
 
 }

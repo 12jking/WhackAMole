@@ -35,19 +35,31 @@ public class SpawnPlatformCommand implements CommandExecutor {
 
     private void spawnPlatform(Location location) throws IOException {
         FileConfiguration configuration = Main.getPlugin().getConfig();
+        final String configPrefix = "whackamole.location.";
 
         for (int x = 0; x < 10; x++) {
             for (int z = 0; z < 10; z++) {
-                new Location(location.getWorld(), location.getX() + x, location.getY(), location.getZ() + z).getBlock().setType(Material.BLACK_SHULKER_BOX);
-                locations.add(new Location(location.getWorld(), location.getX() + x, location.getY(), location.getZ() + z));
+                new Location(location.getWorld(), (int) location.getX() + x, (int) location.getY(), (int) location.getZ() + z).getBlock().setType(Material.BLACK_SHULKER_BOX);
+                locations.add(new Location(location.getWorld(), (int) location.getX() + x, (int) location.getY(), (int) location.getZ() + z));
             }
         }
-
-        configuration.set("whackamole.location.x", (int) location.getX());
-        configuration.set("whackamole.location.y", (int) location.getY());
-        configuration.set("whackamole.location.z", (int) location.getZ() + 10);
+        int current = 1;
+        for (Location currentLocation : locations) {
+            configuration.set(configPrefix + current, currentLocation);
+            current ++;
+        }
 
         configuration.save("plugins//WhackAMole//config.yml");
+    }
 
+    public static void init() {
+        try {
+            FileConfiguration configuration = Main.getPlugin().getConfig();
+            for (int i = 1; i <= 100; i++) {
+                locations.add((Location) configuration.get("whackamole.location." + i));
+            }
+        } catch (ClassCastException | NullPointerException e) {
+            Main.getPlugin().getLogger().severe("An error appeared while loading locations from config.yml");
+        }
     }
 }
