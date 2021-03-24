@@ -8,9 +8,9 @@ public enum Heads {
 
     private ItemStack item;
     private String idTag;
-    private String prefix = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUv";
+    private final String PREFIX = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUv";
     Heads(String texture, String id) {
-        item = ItemBuilder.createHead(prefix + texture, id);
+        item = ItemBuilder.createHead(PREFIX + texture, id);
         idTag = id;
     }
 
