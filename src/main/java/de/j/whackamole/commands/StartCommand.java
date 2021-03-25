@@ -37,6 +37,7 @@ public class StartCommand implements CommandExecutor {
                             Bukkit.getScheduler().cancelTask(Game.taskID);
                             running = true;
                             start = false;
+                            Game.saveScore(player);
                             cancel();
                         }
                         sec --;

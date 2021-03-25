@@ -34,7 +34,7 @@ public class ScoreboardAPI implements Listener {
         scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
         objective = scoreboard.registerNewObjective("abcd", "abcd", "abcd");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(ChatColor.GOLD + "Score");
+        objective.setDisplayName(ChatColor.GOLD + "Score"); //TODO: Den Quatsch saven
     }
 
 }

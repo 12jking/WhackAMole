@@ -5,7 +5,9 @@ import de.j.whackamole.commands.StartCommand;
 import de.j.whackamole.main.Main;
 import de.j.whackamole.util.events.ScoreChangeEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -13,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
@@ -74,7 +78,7 @@ public class Game implements Listener {
                     Bukkit.getScheduler().cancelTask(taskID);
                 }
             }
-        },0, 5);
+        },0, 3);
 
     }
 
@@ -86,4 +90,41 @@ public class Game implements Listener {
         }
     }
 
+    public static void saveScore(Player player) {
+        Thread thread = new Thread(() -> {
+            if (!new File("plugins//WhackAMole//scores.yml").exists()) {
+                try {
+                    new File("plugins//WhackAMole//scores.yml").createNewFile();
+                } catch (IOException e) {
+                    Main.getPlugin().getLogger().severe("An error appeared while saving score");
+                }
+            }
+            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new File("plugins//WhackAMole//scores.yml"));
+            if (configuration.get("whackamole.scores." + player.getName()) != null) {
+                if (configuration.getInt("whackamole.scores." + player.getName()) < getScore(player)) {
+                    configuration.set("whackamole.scores." + player.getName(), getScore(player));
+                    player.sendMessage(ChatColor.DARK_RED + "Du hast einen neuen Highscore erreicht!");
+                    try {
+                        configuration.save(new File("plugins//WhackAMole//scores.yml"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Main.getPlugin().getLogger().severe("An error appeared while saving score");
+                    }
+                } else
+                    player.sendMessage(ChatColor.DARK_RED + "Du hast deinen Highscore nicht erreicht");
+            } else {
+                try {
+                    configuration.set("whackamole.scores." + player.getName(), getScore(player));
+                    player.sendMessage(ChatColor.DARK_RED + "Du hast einen neuen Highscore erreicht!");
+                    configuration.save(new File("plugins//WhackAMole//scores.yml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Main.getPlugin().getLogger().severe("An error appeared while saving score");
+                }
+            }
+
+        });
+        thread.start();
+
+    }
 }
